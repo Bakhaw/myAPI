@@ -40,8 +40,27 @@ app.post('/ingredients', (req, res) => {
   }
 });
 
-app.put('/ingredients', (req, res) => {
-  
+app.put('/ingredients/:id', (req, res) => {
+  // let id = req.params.id;
+  let newText = req.body.text;
+  if (!newText || newText === "") {
+    res.status(500).send({error: 'il doit y avoir du texte'});
+  } else {
+    let objectFound = false;
+    for (var x = 0; x < ingredients.length; x++) {
+      let ing = ingredients[x];
+      if (ing.id === req.params.id) {
+        ing.text = newText;
+        objectFound = true;
+        break;
+      }
+    }
+    if (!objectFound) {
+      res.status(500).send({error: 'il doit y avoir du texte'});
+    } else {
+      res.send(ingredients);
+    }
+  }
 });
 
 app.listen(4444, () => {
